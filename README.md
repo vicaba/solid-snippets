@@ -24,7 +24,7 @@ You can avoid bugs since you are not modifying existing code.
 
 See more [here](https://codeburst.io/introduction-a1ba1f72b13)
 
-# Liskov Substitution Principle
+# Liskov Substitution Principle
 
 It extends the Open/Closed principle and enables you to replace objects of a parent class with objects of a subclass without breaking the application
 
@@ -38,7 +38,7 @@ Similar rules apply to the return value of the method. The return value of a met
 
 See more [here](https://stackify.com/solid-design-liskov-substitution-principle/#:~:text=The%20Liskov%20Substitution%20Principle%20is%20the%20third%20of%20Robert%20C,way%20as%20the%20parent%20class.)
 
-# Interface Seggregation Principle
+# Interface Seggregation Principle
 
 No code should be forced to depend on methods it does not use.
 
