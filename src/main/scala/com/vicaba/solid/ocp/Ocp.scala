@@ -1,40 +1,44 @@
 package com.vicaba.solid.ocp
 
-import java.awt.Rectangle
+object OcpViolation {
 
-// VIOLATING OCP
-trait ShapeViolation
-case class RectangleViolation(width: Int, height: Int) extends ShapeViolation
-case class SquareViolation(width: Int) extends ShapeViolation
-case class TriangleViolation(width: Int, height: Int) extends ShapeViolation
+  trait Shape
+  case class Rectangle(width: Int, height: Int) extends Shape
+  case class Square(width: Int) extends Shape
+  case class Triangle(width: Int, height: Int) extends Shape
 
-class OcpViolation {
-  def calculateArea(shape: ShapeViolation): Int = {
-    shape match {
-      case RectangleViolation(width, height) => width * height
-      case SquareViolation(width)            => width * width
-      case TriangleViolation(width, height)  => width * height / 2
-      // for a new shape, we will need to add a new case, we are "opening" the class again
+  class Ocp {
+    def calculateArea(shape: Shape): Int = {
+      shape match {
+        case Rectangle(width, height) => width * height
+        case Square(width)            => width * width
+        case Triangle(width, height)  => width * height / 2
+        // for a new shape, we will need to add a new case, we are "opening" the class again
+        case _ => throw new IllegalArgumentException("Shape not supported")
+      }
     }
   }
+
 }
 
 // RESPECTING OCP
-trait Shape {
-  def area: Int
-}
-case class Rectangle(width: Int, height: Int) extends Shape {
-  override def area: Int = width * height
-}
-case class Square(width: Int) extends Shape {
-  override def area: Int = width * width
-}
+object OcpRespecting {
 
-case class Triangle(width: Int, height: Int) extends Shape {
-  override def area: Int = width * height / 2
-}
+  trait Shape {
+    def area: Int
+  }
+  case class Rectangle(width: Int, height: Int) extends Shape {
+    override def area: Int = width * height
+  }
+  case class Square(width: Int) extends Shape {
+    override def area: Int = width * width
+  }
+  case class Triangle(width: Int, height: Int) extends Shape {
+    override def area: Int = width * height / 2
+  }
 
-// Even you do not need this Ocp class, you can use Shape directly
-class Ocp {
-  def calculateArea(shape: Shape): Int = shape.area
+  // Even you do not need this Ocp class, you can use Shape directly
+  class Ocp {
+    def calculateArea(shape: Shape): Int = shape.area
+  }
 }
