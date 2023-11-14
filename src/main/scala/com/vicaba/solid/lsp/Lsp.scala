@@ -33,16 +33,13 @@ trait ReadUserRepository {
 }
 
 class MysqlUserRepositoryLsp extends WriteUserRepository with ReadUserRepository {
-  def insert(user: User): Int =
-    // inserts User into Database
-    ???
-  def read(id: Int): User =
-    // reads User from Database
-    ???
+  // inserts User into Database
+  def insert(user: User): Int = ???
+  // reads User from Database
+  def read(id: Int): User = ???
 }
 
 class MongoDbUserRepositoryLsp extends WriteUserRepository {
-  def insert(user: User): Int =
-    // inserts User into Database
-    ???
+  // inserts User into Database
+  def insert(user: User): Int = ???
 }
