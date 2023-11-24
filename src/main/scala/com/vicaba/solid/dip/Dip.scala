@@ -1,6 +1,9 @@
 package com.vicaba.solid.dip
 
 class User
+class MongoDbDriver
+
+def toUser(request: String): User = ???
 
 // Not using Dependency Inversion Principle
 object ViolatingDip {
@@ -11,8 +14,6 @@ object ViolatingDip {
   class UserController(userRepository: MysqlUserRepository) {
     def create(request: String): String =
       userRepository.insert("mysql...", toUser(request)).toString()
-
-    private def toUser(request: String): User = ???
   }
 }
 
@@ -26,7 +27,6 @@ object UsingDip {
     def insert(user: User): Boolean = ???
   }
 
-  class MongoDbDriver
   class MongoDbUserRepository(mongoDbDriver: MongoDbDriver) extends UserRepository {
     def insert(user: User): Boolean = ???
   }
@@ -34,7 +34,5 @@ object UsingDip {
   class UserController(userRepository: UserRepository) {
     def create(request: String): String =
       userRepository.insert(toUser(request)).toString()
-
-    private def toUser(request: String): User = ???
   }
 }
