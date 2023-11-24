@@ -6,7 +6,7 @@ class MongoDbDriver
 def toUser(request: String): User = ???
 
 // Not using Dependency Inversion Principle
-object ViolatingDip {
+object NotUsingDip {
   class MysqlUserRepository {
     def insert(mysqlConnection: String, user: User): Boolean = ???
   }
