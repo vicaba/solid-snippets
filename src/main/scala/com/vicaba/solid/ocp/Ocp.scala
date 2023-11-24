@@ -2,7 +2,6 @@ package com.vicaba.solid.ocp
 
 // Not using Open/Closed Principle
 object NotUsingOcp {
-
   trait Shape
   case class Rectangle(width: Int, height: Int) extends Shape
   case class Square(width: Int) extends Shape
@@ -19,12 +18,10 @@ object NotUsingOcp {
       }
     }
   }
-
 }
 
-// Not using Open/Closed Principle
+// Using Open/Closed Principle
 object UsingOcp {
-
   // Use polymorfism and enforce subclasses to implement the method "area"
   trait Shape {
     def area: Int
