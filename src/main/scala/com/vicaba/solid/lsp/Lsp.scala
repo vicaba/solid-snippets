@@ -1,45 +1,66 @@
 package com.vicaba.solid.lsp
 
-trait UserRepository {
-  def insert(user: User): Int
-  def read(id: Int): User
-}
-
 case class User(name: String, email: String)
+val dummyUser = User("Dummy", "dummy@email.hey")
 
-// VIOLATING LSP
-class MysqlUserRepository extends UserRepository {
-  def insert(user: User): Int =
-    // inserts User into Database
-    ???
-  def read(id: Int): User =
-    // reads User from Database
-    ???
+// Not using LSP
+object NotUsingLsp {
+  trait UserRepository {
+    def insert(user: User): Int
+    def read(id: Int): User
+  }
+
+  class MysqlUserRepository extends UserRepository {
+    def insert(user: User): Int = ???
+    def read(id: Int): User = ???
+  }
+
+  class MongoDbUserRepository extends UserRepository {
+    def insert(user: User): Int = ???
+    def read(id: Int): User = throw new Exception("This Mongo doesn't support read")
+  }
+
+  class MyController(userRepository: UserRepository) {
+    userRepository.read(1)
+    // If the injected repository is a MysqlUserRepository: we are good!
+    // If the injected repository is a MongoDbUserRepository: exception.
+    // Some interface: sometimes works, sometimes it doesn't...
+  }
+
 }
 
-class MongoDbUserRepository extends UserRepository {
-  def insert(user: User): Int =
-    // inserts User into Database
-    ???
-  def read(id: Int): User = throw new Exception("Not implemented")
-}
+// Using LSP
+object UsingLsP {
+  trait WriteUserRepository {
+    def insert(user: User): Int
+  }
 
-// RESPECTING LSP
-trait WriteUserRepository {
-  def insert(user: User): Int
-}
-trait ReadUserRepository {
-  def read(id: Int): User
-}
+  trait ReadUserRepository {
+    def read(id: Int): User
+  }
 
-class MysqlUserRepositoryLsp extends WriteUserRepository with ReadUserRepository {
-  // inserts User into Database
-  def insert(user: User): Int = ???
-  // reads User from Database
-  def read(id: Int): User = ???
-}
+  class MysqlUserRepositoryLsp extends WriteUserRepository with ReadUserRepository {
+    def insert(user: User): Int = ???
+    def read(id: Int): User = ???
+  }
 
-class MongoDbUserRepositoryLsp extends WriteUserRepository {
-  // inserts User into Database
-  def insert(user: User): Int = ???
+  class MongoDbUserRepositoryLsp extends WriteUserRepository {
+    def insert(user: User): Int = ???
+  }
+
+  class MyController(
+    readUserRepository: ReadUserRepository,
+    writeUserRepository: WriteUserRepository
+  ) {
+    readUserRepository.read(1)
+    writeUserRepository.insert(dummyUser)
+    // We are seggregating interfaces, so we have more flexibility in the composition
+  }
+
+  // Or we can use intersection types! Here, the only valid implementation is Mysql
+  class AnotherMyController(readAndWriteUserRepository: ReadUserRepository & WriteUserRepository) {
+    readAndWriteUserRepository.read(1)
+    readAndWriteUserRepository.insert(dummyUser)
+    // We are seggregating interfaces, so we have more flexibility in the composition
+  }
 }
