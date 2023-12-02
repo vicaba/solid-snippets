@@ -22,15 +22,17 @@ object NotUsingLsp {
 
   class MyController(userRepository: UserRepository) {
     userRepository.read(1)
-    // If the injected repository is a MysqlUserRepository: we are good!
-    // If the injected repository is a MongoDbUserRepository: exception.
-    // Some interface: sometimes works, sometimes it doesn't...
+    userRepository.insert(dummyUser) // Will it work?
+    // 1. If the injected repository is a MysqlUserRepository: we are good!
+    // 2. If the injected repository is a MongoDbUserRepository: exception.
+    // 3. Same interface, but: sometimes works, sometimes it doesn't...
   }
 
 }
 
 // Using LSP
 object UsingLsP {
+  // 1. We can seggregating interfaces, so we have more flexibility in the composition
   trait WriteUserRepository {
     def insert(user: User): Int
   }
@@ -39,12 +41,12 @@ object UsingLsP {
     def read(id: Int): User
   }
 
-  class MysqlUserRepositoryLsp extends WriteUserRepository with ReadUserRepository {
+  class MysqlUserRepository extends WriteUserRepository with ReadUserRepository {
     def insert(user: User): Int = ???
     def read(id: Int): User = ???
   }
 
-  class MongoDbUserRepositoryLsp extends WriteUserRepository {
+  class MongoDbUserRepository extends WriteUserRepository {
     def insert(user: User): Int = ???
   }
 
@@ -54,13 +56,12 @@ object UsingLsP {
   ) {
     readUserRepository.read(1)
     writeUserRepository.insert(dummyUser)
-    // We are seggregating interfaces, so we have more flexibility in the composition
+    // 2. We are seggregating interfaces, so we have more flexibility in the composition
   }
 
-  // Or we can use intersection types! Here, the only valid implementation is Mysql
+  // 3. Or we can use intersection types! Here, the only valid implementation is Mysql
   class AnotherMyController(readAndWriteUserRepository: ReadUserRepository & WriteUserRepository) {
     readAndWriteUserRepository.read(1)
     readAndWriteUserRepository.insert(dummyUser)
-    // We are seggregating interfaces, so we have more flexibility in the composition
   }
 }
