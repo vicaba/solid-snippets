@@ -22,7 +22,7 @@ object NotUsingLsp {
 
   class MyController(userRepository: UserRepository) {
     userRepository.read(1)
-    userRepository.insert(dummyUser) // 1. Will it work?
+    userRepository.insert(dummyUser) // 1. Will the insert work?
     // 2. If the injected repository is a MysqlUserRepository: we are good!
     // 3. If the injected repository is a MongoDbUserRepository: exception.
     // 4. Same interface, but: sometimes it works, sometimes it doesn't...
