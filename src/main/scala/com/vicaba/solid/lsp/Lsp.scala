@@ -25,7 +25,7 @@ object NotUsingLsp {
     userRepository.insert(dummyUser) // Will it work?
     // 1. If the injected repository is a MysqlUserRepository: we are good!
     // 2. If the injected repository is a MongoDbUserRepository: exception.
-    // 3. Same interface, but: sometimes works, sometimes it doesn't...
+    // 3. Same interface, but: sometimes it works, sometimes it doesn't...
   }
 
 }
