@@ -31,7 +31,7 @@ object NotUsingLsp {
 }
 
 // Using LSP
-object UsingLsP {
+object UsingLsp {
   // 1. We can seggregating interfaces, so we have more flexibility in the composition
   trait WriteUserRepository {
     def insert(user: User): Int

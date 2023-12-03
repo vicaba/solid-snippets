@@ -34,7 +34,7 @@ Let Φ(x) be a property provable about objects x of type T. Then Φ(y) should be
 
 The principle requires the objects of your subclasses to behave in the same way as the objects of your superclass.
 
-An overridden method of a subclass needs to accept the same input parameter values as the method of the superclass
+An overridden method of a subclass needs to accept the same input parameter values as the method of the superclass.
 
 Similar rules apply to the return value of the method. The return value of a method of the subclass needs to comply with the same rules as the return value of the method of the superclass.
 
